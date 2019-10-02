@@ -3,3 +3,5 @@ const app = express();
 app.get('/', (req, res) => {
     res.send({message: 'Hi Usman'});
 });
+
+app.listen(process.env.PORT || 5000);
