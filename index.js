@@ -1,11 +1,21 @@
 const express = require('express'); 
 
 const keys = require('./config/keys');
-const app = express();
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const app = express();
+app.use(
+    cookieSession({
+        maxAge: 30*24*60*60*100,
+        keys: [keys.cookieKey]
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+require('./Models/User');
 require('./Services/passport');
 app.use(require('./routes/route')); 
-require('./Models/User');
 mongoose.connect(keys.mongoUri, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
 
 
@@ -15,3 +25,5 @@ mongoose.connect(keys.mongoUri, {useUnifiedTopology: true, useNewUrlParser: true
 app.listen(process.env.PORT || 5000);
 
 // mongodb+srv://usman_1994:khhTL8toWuLy54jv@cluster0-41gbw.mongodb.net/test?retryWrites=true&w=majority
+
+// https://stark-hollows-83009.herokuapp.com/ | https://git.heroku.com/stark-hollows-83009.git
